@@ -1,13 +1,13 @@
 ---
 name: smoke-test
-description: Use this agent for Phase 4 of the document review pipeline — verifying that every quote in the final review matches the source document exactly. Launched by the review-document command, 2-3 instances in parallel, each covering a batch of findings. Examples:
+description: Use this agent for Phase 3 of the document review pipeline — verifying that every quote in the final review matches the source document exactly. Launched by the review-document command, 2-3 instances in parallel, each covering a batch of findings. Examples:
 
   <example>
   Context: The review-document command has compiled surviving findings and needs final verification.
   user: "/review-document path/to/document.md"
   assistant: "Launching smoke-test agents to verify all quotes and line references match the source document."
   <commentary>
-  Phase 4 uses fresh agents that have never seen the prior output. They verify the final review artifact against the source before delivery.
+  Phase 3 uses fresh agents that have never seen the prior output. They verify the final review artifact against the source before delivery.
   </commentary>
   </example>
 
