@@ -18,7 +18,7 @@ When AI agents review documents naively, they:
 
 In real-world testing, 24% of findings from an 8-pass pipeline were wrong.
 
-## The Pipeline (v4)
+## The Pipeline (v5)
 
 Three Red-Blue pairs at different analytical altitudes, followed by compilation and smoke test.
 

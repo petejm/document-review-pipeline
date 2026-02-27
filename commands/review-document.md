@@ -4,7 +4,7 @@ description: Run a Red vs Blue adversarial document review. Three altitude-scope
 argument: file_path - Path to the document to review
 ---
 
-# Document Review Pipeline — Red vs Blue (v4)
+# Document Review Pipeline — Red vs Blue (v5)
 
 Reviewing: `$ARGUMENTS`
 
@@ -149,7 +149,7 @@ Wait for completion. Collect all extracted claims.
 
 ### Phase 4a-v: Claim Smoke Test
 
-Launch 2-3 smoke-test agents in parallel to verify that extracted claims accurately represent the source document. Split the extracted claims into batches.
+Launch smoke-test agents in parallel to verify that extracted claims accurately represent the source document. Split the extracted claims into batches of ~50 claims each (e.g., 200 claims → 4 agents).
 
 For each batch, use the Task tool:
 
@@ -175,7 +175,7 @@ Drop any FAILED claims. Only VERIFIED claims proceed to Phase 4b.
 
 ### Phase 4b: Web Verification (LOAD-BEARING claims only)
 
-From the VERIFIED claims, select only those tagged LOAD-BEARING. Batch them into groups of 5-10 and launch web-verifier agents in parallel.
+From the VERIFIED claims, select only those tagged LOAD-BEARING. Batch them into groups of ~20-25 and launch web-verifier agents in parallel (e.g., 92 LOAD-BEARING claims → 4 agents of ~23 each).
 
 For each batch, use the Task tool:
 
@@ -211,13 +211,20 @@ Compute exploratory metrics (no action threshold defined):
 - **Temporal drift count:** Claims that were once-correct but are now outdated
 - **Circular confirmation count:** Claims CONFIRMED only by the same source the document cites
 
+**Pattern detection:** After the per-claim table, scan for directional bias patterns across all CONTRADICTED and DISPUTED claims. Ask: do the errors all go in the same direction? For example:
+- Distance claims consistently rounded to make allies closer or threats farther
+- Budget claims using inflated denominators to minimize percentage impact
+- Cost figures using higher/lower estimates depending on which favors the argument
+
+If a directional pattern exists across 3+ claims, flag it as a document-level finding. Single-claim patterns are not meaningful — this analysis requires cross-claim evidence.
+
 ---
 
 ## Output Structure
 
     # Document Review: [document name]
 
-    **Pipeline:** Red vs Blue v4 | **Findings:** X generated → Y survived Blue → Z verified
+    **Pipeline:** Red vs Blue v5 | **Findings:** X generated → Y survived Blue → Z verified
 
     ## Document Strengths
     [From Red-Strategic agent's assessment]

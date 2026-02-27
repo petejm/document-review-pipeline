@@ -196,6 +196,8 @@ This is annotation only. Do not generate new review findings.
 
 Compare web results against your review findings. Note which contradicted claims Red already caught, and which are new discoveries.
 
+**Pattern detection:** Look across all CONTRADICTED and DISPUTED claims for directional bias — do errors consistently favor the document's argument? (e.g., distances rounded to make allies closer, budgets using inflated denominators to minimize percentages). Flag patterns supported by 3+ claims.
+
 ---
 
 ## Tips
