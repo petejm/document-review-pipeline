@@ -32,6 +32,8 @@ Seven categories of failure observed in multi-agent document review, derived fro
 
 **Pipeline fix:** No web searches during review. The review is about what the document says. External fact-checking is a separate, clearly-labeled activity done after the review is complete.
 
+**Phase 4 note (v0.3.0):** Phase 4 adds web verification, but it is safe because it operates post-lock on smoke-tested claims. The review (Phases 1-3) is finalized before any web search occurs. Phase 4 output appears in a separate appendix with a reading-order protocol instructing the human to form their own assessment first. Web results cannot modify upstream findings — they are annotation only. Claims are systematically extracted and smoke-tested against the source text before any web search, preventing the "compare web to memory" failure mode that makes Category 3 dangerous.
+
 ## Category 4: Additive-Only Incentives
 
 **What it looks like:** Review produces many findings, most of which are real — but some are fabricated or exaggerated. More passes = more findings.
