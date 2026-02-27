@@ -116,9 +116,64 @@ Remove or correct any FAILED findings before delivering.
 
 ---
 
+## Step 4: Web Enrichment (Manual, Optional)
+
+After the review is complete and delivered, you can optionally verify factual claims against external sources. This is a separate activity from the review itself.
+
+### Step 4a: Extract Claims
+
+Start a NEW conversation:
+
+```
+You are a factual claim extraction agent. Read the attached document and extract every
+verifiable factual claim — distances, dates, budgets, titles, organizational facts,
+historical events, statistics, geographic/scientific facts.
+
+DOCUMENT:
+[paste or attach the source document]
+
+For each claim provide:
+- Exact quote with line/section reference
+- Category (distance, budget, date, title, org-fact, historical, statistical, geographic)
+- Materiality: LOAD-BEARING (central to argument) or BACKGROUND (contextual)
+- Temporality: STATIC (timeless) or TEMPORAL (time-sensitive)
+- Assertion polarity: ASSERTED (document's own claim) / ATTRIBUTED (cites a source) / REFUTED (mentioned to argue against)
+
+Do NOT extract: recommendations, value judgments, interpretive statistics, contested causal
+claims, relative comparisons without reference data, or internal cross-references.
+Do NOT evaluate correctness. Extraction only.
+```
+
+### Step 4b: Verify LOAD-BEARING Claims
+
+For each LOAD-BEARING claim, start a NEW conversation with web search enabled:
+
+```
+Verify this factual claim against authoritative external sources.
+
+CLAIM:
+[paste one LOAD-BEARING claim here]
+
+Search the web and report:
+- Verdict: CONFIRMED / CONTRADICTED / DISPUTED / UNVERIFIABLE
+- Source URL and relevant quote from source
+- If TEMPORAL: was this accurate when written? Is it still accurate now?
+- Circular check: is your source the same as the document's own citation?
+- Source authority: government > peer-reviewed > established media > trade > Wikipedia
+
+This is annotation only. Do not generate new review findings.
+```
+
+### Step 4c: Cross-Reference
+
+Compare web results against your review findings. Note which contradicted claims Red already caught, and which are new discoveries.
+
+---
+
 ## Tips
 
 - **Don't skip Blue defense.** It's the most important step.
 - **Use separate conversations** for each Blue check.
 - **Three altitudes are worth the effort** — they catch different things.
-- **No web searches in any step.** Web fact-checking comes after, clearly labeled.
+- **No web searches in Steps 1-3.** Web fact-checking is Step 4, clearly separated.
+- **Read the review before the appendix.** Form your document-grounded assessment first.
