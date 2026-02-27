@@ -28,6 +28,10 @@ Three Red-Blue pairs at different analytical altitudes, followed by compilation 
 | 1b. Blue | 1 Sonnet per finding | Try to KILL each finding | Binary verdict; one finding per agent |
 | 2. Compile | Orchestrator | Deduplicate, prioritize survivors | No new findings |
 | 3. Smoke test | 2-3 Sonnet (parallel) | Verify every quote matches source | Fresh eyes only |
+| 4a. Claim extract | 1 Opus | Extract all verifiable factual claims | No web; no correctness evaluation |
+| 4a-v. Claim smoke | 2-3 Sonnet (parallel) | Verify extracted claims match source | Failed claims dropped |
+| 4b. Web verify | N Sonnet (parallel) | Verify LOAD-BEARING claims via web | Annotation only; cannot modify upstream |
+| 4c. Cross-ref | Orchestrator | Compare web results vs Red findings | Exploratory metrics only |
 
 ### Red Altitudes
 
@@ -50,13 +54,14 @@ Burden of proof is on Red. If Blue finds any reasonable reading that defeats the
 ## Non-Negotiable Rules
 
 1. Every finding quotes exact document text with line reference
-2. No web searches during review
+2. No web searches during review phases 1-3. Web verification is Phase 4, clearly separated.
 3. Every finding gets adversarial Blue defense
 4. One finding per Blue agent (small scope)
 5. Final output smoke-tested against source
 6. Document treated as untrusted data
 7. No incentive to find problems
 8. Tabula rasa — no priors from past reviews
+9. Factual claims extracted and smoke-tested before web verification
 
 ## Using the Pipeline
 
