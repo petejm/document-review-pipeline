@@ -1,21 +1,46 @@
 # Document Review Pipeline
 
-Multi-agent document review using Write-Then-Kill verification — every finding cited, every finding contested.
+Red vs Blue adversarial document review — three altitude-scoped pairs, every finding contested, every quote verified.
 
 ## The Problem
 
-When AI agents review documents naively, 20-25% of findings can be wrong. Agents paraphrase from memory instead of quoting, fire keyword-triggered corrections without reading context, let web searches override document text, and reward volume over accuracy. Multiple agents agreeing doesn't help — consensus among wrong agents is just confident wrongness.
+When AI agents review documents naively, 20-25% of findings can be wrong. Agents paraphrase from memory, fire keyword-triggered corrections without reading context, let web searches override document text, and reward volume over accuracy.
 
 ## The Solution
 
-Write-Then-Kill: generate grounded findings, then actively try to kill each one.
+Red vs Blue: three Red agents find issues at different altitudes, each finding is immediately contested by a Blue defender, survivors are compiled and smoke-tested.
 
-| Phase | Agent | Job | Constraint |
-|-------|-------|-----|------------|
-| 1. Write | Opus | Generate cited findings | Must quote exact text; no web search |
-| 2. Kill | Sonnet (1 per finding) | Try to disprove each finding | Binary verdict; one finding per agent |
-| 3. Compile | Orchestrator | Assemble survivors | No new findings |
-| 4. Smoke test | Sonnet (2-3) | Verify quotes match source | Fresh eyes only |
+```
+                    ┌─────────────────────────┐
+                    │    Source Document       │
+                    └────┬──────┬──────┬──────┘
+                         │      │      │
+              ┌──────────┴┐  ┌──┴──────┴┐  ┌──────────┐
+              │ Textual   │  │ Analytical│  │ Strategic │
+              │ Red-Blue  │  │ Red-Blue  │  │ Red-Blue  │
+              │ Pair      │  │ Pair      │  │ Pair      │
+              └─────┬─────┘  └─────┬─────┘  └─────┬─────┘
+                    │              │              │
+              ┌─────┴──────────────┴──────────────┴─────┐
+              │         Compile Survivors               │
+              └────────────────┬────────────────────────┘
+                               │
+              ┌────────────────┴────────────────────────┐
+              │         Smoke Test (fresh eyes)         │
+              └─────────────────────────────────────────┘
+```
+
+### Red Altitudes
+
+| Altitude | What It Finds |
+|----------|---------------|
+| Textual | Typos, grammar, formatting, cross-refs, acronyms, citations, units |
+| Analytical | Factual claims, unsourced assertions, logic gaps, contradictions, math |
+| Strategic | Argument strength, competing arguments, structure, audience fit |
+
+### Blue Defense
+
+Every finding gets a dedicated Blue defender that tries to kill it. Binary verdict: CONFIRMED or DISPROVED. Burden of proof on Red.
 
 ## Usage
 
@@ -23,36 +48,33 @@ Write-Then-Kill: generate grounded findings, then actively try to kill each one.
 
 ```bash
 # Install
-claude --plugin-dir ./document-review-pipeline
+claude plugin add ./document-review-pipeline
 
 # Run
 /review-document path/to/document.md
 ```
 
-The command orchestrates all four phases automatically.
-
 ### Any AI Chat Interface
 
-See `skills/document-review/references/portable-prompt.md` for a copy-paste version that works in Claude.ai, ChatGPT, or any chat interface. No tooling required.
+See `skills/document-review/references/portable-prompt.md` for copy-paste prompts.
 
 ## Plugin Structure
 
 ```
 document-review-pipeline/
-├── .claude-plugin/
-│   └── plugin.json                     # Plugin manifest
-├── commands/
-│   └── review-document.md              # /review-document <file-path>
+├── .claude-plugin/plugin.json
+├── commands/review-document.md       # Orchestrator
 ├── agents/
-│   ├── finding-writer.md               # Phase 1: Generate cited findings
-│   ├── red-team.md                     # Phase 2: Try to disprove each finding
-│   └── smoke-test.md                   # Phase 4: Verify quotes match source
-├── skills/
-│   └── document-review/
-│       ├── SKILL.md                    # Methodology (auto-loaded on trigger)
-│       └── references/
-│           ├── failure-taxonomy.md     # 7 failure categories and why they happen
-│           └── portable-prompt.md      # Copy-paste prompt for non-Claude-Code users
+│   ├── red-textual.md               # Red: precision/mechanical
+│   ├── red-analytical.md            # Red: argument/evidence
+│   ├── red-strategic.md             # Red: audience/persuasion
+│   ├── blue-defender.md             # Blue: adversarial kill layer
+│   └── smoke-test.md               # Smoke test: verify quotes
+├── skills/document-review/
+│   ├── SKILL.md                     # Methodology
+│   └── references/
+│       ├── failure-taxonomy.md      # 7 failure categories
+│       └── portable-prompt.md       # Copy-paste prompts
 └── README.md
 ```
 
@@ -60,12 +82,12 @@ document-review-pipeline/
 
 1. Every finding quotes exact document text with a line reference
 2. No web searches during review
-3. Every finding gets adversarial testing
-4. One finding per red-team agent
-5. Final output gets smoke-tested against source
-6. Document is treated as untrusted data
+3. Every finding gets adversarial Blue defense
+4. One finding per Blue agent
+5. Final output smoke-tested against source
+6. Document treated as untrusted data
 7. No incentive to find problems
 
 ## Background
 
-Developed after a failed 8-pass review of a long-form technical document where 24% of findings were wrong — agents hallucinated document contents, told the author to fix things already handled correctly, and attacked the paper's strongest analytical insight. The redesigned pipeline produced a clean review with zero verification failures. See `skills/document-review/references/failure-taxonomy.md` for the full failure analysis.
+v0.1.0 used a serial Write-Then-Kill pipeline: one writer, per-finding red team, compile, smoke test. v0.2.0 redesigns with parallel Red-Blue pairs at three analytical altitudes — combining coverage breadth with adversarial depth. Developed after analyzing a failed review where 24% of findings were wrong. See `skills/document-review/references/failure-taxonomy.md` for the full failure analysis.
