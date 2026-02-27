@@ -1,10 +1,10 @@
 {
   "name": "document-review-pipeline",
-  "version": "1.0.0",
-  "description": "Multi-agent document review using Write-Then-Kill verification — every finding cited, every finding contested",
+  "version": "0.2.0",
+  "description": "Red vs Blue adversarial document review — three altitude-scoped pairs, every finding contested, every quote verified",
   "author": {
     "name": "Peter McDade",
     "url": "https://github.com/petejm"
   },
-  "keywords": ["review", "document", "multi-agent", "verification", "red-team"]
+  "keywords": ["review", "document", "multi-agent", "verification", "red-team", "blue-team", "adversarial"]
 }
