@@ -1,7 +1,7 @@
 {
   "name": "document-review-pipeline",
-  "version": "0.2.0",
-  "description": "Red vs Blue adversarial document review — three altitude-scoped pairs, every finding contested, every quote verified",
+  "version": "0.3.0",
+  "description": "Red vs Blue adversarial document review — three altitude-scoped pairs, every finding contested, every quote verified, with post-review web enrichment",
   "author": {
     "name": "Peter McDade",
     "url": "https://github.com/petejm"
