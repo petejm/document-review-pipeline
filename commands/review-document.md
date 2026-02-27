@@ -125,6 +125,94 @@ After Phase 3 completes:
 
 ---
 
+---
+
+## Phase 4: External Verification (Web Enrichment)
+
+Phase 4 is a separate analytical activity that operates on the locked review from Phases 1-3. It does not modify any upstream findings.
+
+### Phase 4a: Factual Claim Extraction
+
+Launch the claim-extractor agent to systematically extract every verifiable factual claim from the source document.
+
+    subagent_type: "document-review-pipeline:claim-extractor"
+    prompt: |
+      Extract all verifiable factual claims from this document: $ARGUMENTS
+      Read the entire document. For each claim, provide: exact quote with line number,
+      category, materiality (LOAD-BEARING or BACKGROUND), temporality (STATIC or TEMPORAL),
+      and assertion polarity (ASSERTED, ATTRIBUTED, or REFUTED).
+      Do NOT evaluate correctness. Do NOT search the web. Extraction only.
+
+Wait for completion. Collect all extracted claims.
+
+---
+
+### Phase 4a-v: Claim Smoke Test
+
+Launch 2-3 smoke-test agents in parallel to verify that extracted claims accurately represent the source document. Split the extracted claims into batches.
+
+For each batch, use the Task tool:
+
+    subagent_type: "document-review-pipeline:smoke-test"
+    prompt: |
+      Source document: $ARGUMENTS
+
+      Verify that every quoted claim below accurately represents the source document.
+      For each claim: check that the quote is exact, the line reference is correct,
+      and the extracted claim accurately represents what the document says (no added
+      precision, no dropped qualifiers, correct assertion polarity).
+
+      For each claim: VERIFIED or FAILED with detail.
+
+      CLAIMS TO VERIFY:
+      [paste the batch of extracted claims here]
+
+Launch smoke-test agents in parallel.
+
+Drop any FAILED claims. Only VERIFIED claims proceed to Phase 4b.
+
+---
+
+### Phase 4b: Web Verification (LOAD-BEARING claims only)
+
+From the VERIFIED claims, select only those tagged LOAD-BEARING. Batch them into groups of 5-10 and launch web-verifier agents in parallel.
+
+For each batch, use the Task tool:
+
+    subagent_type: "document-review-pipeline:web-verifier"
+    prompt: |
+      Source document: $ARGUMENTS
+
+      Verify these LOAD-BEARING factual claims against authoritative web sources.
+      For each claim: CONFIRMED, CONTRADICTED, DISPUTED, or UNVERIFIABLE.
+      Include source URL, evidence quote, temporal note, circular confirmation check,
+      and source authority tier.
+
+      Cannot modify upstream review findings. Annotation only.
+
+      CLAIMS TO VERIFY:
+      [paste the batch of LOAD-BEARING claims here]
+
+Launch web-verifier agents in parallel.
+
+---
+
+### Phase 4c: Cross-Reference Table
+
+The orchestrator (no new agent) produces a cross-reference comparing Phase 4b web results against Phase 1-3 confirmed findings:
+
+| Claim | Document Says | Web Says | Verdict | Red Caught? | Finding # |
+|---|---|---|---|---|---|
+| [claim] | [quote] | [web evidence] | CONFIRMED/CONTRADICTED/DISPUTED/UNVERIFIABLE | Yes/No | [#] or — |
+
+Compute exploratory metrics (no action threshold defined):
+- **Red catch rate:** % of CONTRADICTED claims that Red already flagged
+- **Web-only discoveries:** CONTRADICTED claims Red missed
+- **Temporal drift count:** Claims that were once-correct but are now outdated
+- **Circular confirmation count:** Claims CONFIRMED only by the same source the document cites
+
+---
+
 ## Output Structure
 
     # Document Review: [document name]
@@ -166,9 +254,35 @@ After Phase 3 completes:
     - VERIFIED: [N]
     - FAILED: [N]
 
+    ## External Verification Appendix
+
+    > **Reading Order:** Read the review findings (above) and form your own assessment
+    > BEFORE reading this appendix. The review is grounded solely in what your document
+    > says. This appendix contains external verification that may confirm, contradict,
+    > or complicate claims — but it is a separate analytical activity with different
+    > evidence standards and different failure modes.
+
+    ### Summary
+    - N LOAD-BEARING claims extracted, M verified
+    - X CONFIRMED, Y CONTRADICTED, Z DISPUTED, W UNVERIFIABLE
+    - Red catch rate: [N]% of contradicted claims were already flagged by review
+
+    ### Verification Results
+    [Per-claim output from Phase 4b]
+
+    ### Pipeline Calibration
+    [Phase 4c cross-reference table and metrics]
+
+    ### Claims Not Verified (BACKGROUND)
+    [List of BACKGROUND claims — extracted but not web-checked]
+
     ## Pipeline Metadata
     - Phase 1 Red: 3 agents (Opus), parallel execution
     - Phase 1b Blue: [N] agents (Sonnet), 1 per finding, parallel execution
     - Phase 2: Compilation and deduplication
     - Phase 3: [N] smoke-test agents (Sonnet), parallel execution
+    - Phase 4a: 1 claim-extractor agent (Opus)
+    - Phase 4a-v: [N] smoke-test agents (Sonnet), parallel execution
+    - Phase 4b: [N] web-verifier agents (Sonnet), parallel execution
+    - Phase 4c: Orchestrator cross-reference
     - Total tokens: [N]
