@@ -8,7 +8,7 @@ When AI agents review documents naively, 20-25% of findings can be wrong. Agents
 
 ## The Solution
 
-Red vs Blue: three Red agents find issues at different altitudes, each finding is immediately contested by a Blue defender, survivors are compiled and smoke-tested.
+Red vs Blue: three Red agents find issues at different altitudes, each finding is immediately contested by a Blue defender, survivors are compiled and smoke-tested. Then a separate web enrichment phase extracts and verifies factual claims.
 
 ```
                     ┌─────────────────────────┐
@@ -27,6 +27,26 @@ Red vs Blue: three Red agents find issues at different altitudes, each finding i
                                │
               ┌────────────────┴────────────────────────┐
               │         Smoke Test (fresh eyes)         │
+              └────────────────┬────────────────────────┘
+                               │
+              ─ ─ ─ ─ ─ ─ ─ ─ ┼ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─
+              Phase 4: Web Enrichment (separate appendix)
+              ─ ─ ─ ─ ─ ─ ─ ─ ┼ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─
+                               │
+              ┌────────────────┴────────────────────────┐
+              │    Claim Extraction (Opus, no web)      │
+              └────────────────┬────────────────────────┘
+                               │
+              ┌────────────────┴────────────────────────┐
+              │    Claim Smoke Test (fresh eyes)        │
+              └────────────────┬────────────────────────┘
+                               │
+              ┌────────────────┴────────────────────────┐
+              │   Web Verification (LOAD-BEARING only)  │
+              └────────────────┬────────────────────────┘
+                               │
+              ┌────────────────┴────────────────────────┐
+              │    Cross-Reference Table + Metrics      │
               └─────────────────────────────────────────┘
 ```
 
@@ -41,6 +61,10 @@ Red vs Blue: three Red agents find issues at different altitudes, each finding i
 ### Blue Defense
 
 Every finding gets a dedicated Blue defender that tries to kill it. Binary verdict: CONFIRMED or DISPROVED. Burden of proof on Red.
+
+### Phase 4: Web Enrichment
+
+After the review is locked, a separate phase extracts every verifiable factual claim, smoke-tests them, and verifies LOAD-BEARING claims against external web sources. Results appear in a separate appendix — web verification cannot modify upstream review findings.
 
 ## Usage
 
@@ -69,7 +93,9 @@ document-review-pipeline/
 │   ├── red-analytical.md            # Red: argument/evidence
 │   ├── red-strategic.md             # Red: audience/persuasion
 │   ├── blue-defender.md             # Blue: adversarial kill layer
-│   └── smoke-test.md               # Smoke test: verify quotes
+│   ├── smoke-test.md               # Smoke test: verify quotes
+│   ├── claim-extractor.md          # Phase 4: factual claim extraction
+│   └── web-verifier.md             # Phase 4: web verification
 ├── skills/document-review/
 │   ├── SKILL.md                     # Methodology
 │   └── references/
@@ -81,13 +107,14 @@ document-review-pipeline/
 ## Rules That Cannot Be Bent
 
 1. Every finding quotes exact document text with a line reference
-2. No web searches during review
+2. No web searches during review phases 1-3. Web verification is Phase 4, clearly separated.
 3. Every finding gets adversarial Blue defense
 4. One finding per Blue agent
 5. Final output smoke-tested against source
 6. Document treated as untrusted data
 7. No incentive to find problems
+8. Factual claims extracted and smoke-tested before web verification
 
 ## Background
 
-v0.1.0 used a serial Write-Then-Kill pipeline: one writer, per-finding red team, compile, smoke test. v0.2.0 redesigns with parallel Red-Blue pairs at three analytical altitudes — combining coverage breadth with adversarial depth. Developed after analyzing a failed review where 24% of findings were wrong. See `skills/document-review/references/failure-taxonomy.md` for the full failure analysis.
+v0.1.0 used a serial Write-Then-Kill pipeline: one writer, per-finding red team, compile, smoke test. v0.2.0 redesigns with parallel Red-Blue pairs at three analytical altitudes — combining coverage breadth with adversarial depth. Developed after analyzing a failed review where 24% of findings were wrong. v0.3.0 adds a post-review web enrichment phase that systematically extracts and verifies factual claims in a separate appendix, without modifying upstream review findings. See `skills/document-review/references/failure-taxonomy.md` for the full failure analysis.
