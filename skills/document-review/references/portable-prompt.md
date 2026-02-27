@@ -144,6 +144,34 @@ claims, relative comparisons without reference data, or internal cross-reference
 Do NOT evaluate correctness. Extraction only.
 ```
 
+### Step 4a-v: Verify Extracted Claims (Smoke Test)
+
+Before web verification, start a NEW conversation to verify extraction accuracy:
+
+```
+You are a verification agent. Check that these extracted claims accurately
+represent what the source document says.
+
+EXTRACTED CLAIMS:
+[paste your extracted claims from Step 4a]
+
+DOCUMENT:
+[paste or attach the source document]
+
+For each claim:
+1. Look up the quoted text in the source. Verify the quote is exact.
+2. Verify the claim accurately represents the quote (no added precision,
+   no dropped qualifiers — e.g., "$2.3B" extracted from "$2-3B range" is FAILED).
+3. Verify assertion polarity: does the document ASSERT this, ATTRIBUTE it to
+   a source, or REFUTE it? Match against the extracted polarity tag.
+
+OUTPUT per claim: VERIFIED or FAILED with detail.
+```
+
+Remove any FAILED claims before proceeding to Step 4b.
+
+---
+
 ### Step 4b: Verify LOAD-BEARING Claims
 
 For each LOAD-BEARING claim, start a NEW conversation with web search enabled:
