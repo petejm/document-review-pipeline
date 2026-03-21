@@ -1,6 +1,7 @@
 ---
 name: web-verifier
-description: Use this agent for Phase 4b of the document review pipeline — web verification of LOAD-BEARING factual claims. Launched by the review-document command after Phase 4a-v claim smoke test. Verifies extracted claims against external sources. Cannot modify upstream findings. Examples:
+description: |
+  Use this agent for Phase 4b of the document review pipeline — web verification of LOAD-BEARING factual claims. Launched by the review-document command after Phase 4a-v claim smoke test. Verifies extracted claims against external sources. Cannot modify upstream findings. Examples:
 
   <example>
   Context: The review-document command is orchestrating a v5 Red vs Blue review. Phase 4a-v has verified extracted claims.
