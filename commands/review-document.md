@@ -74,6 +74,11 @@ Collect verdicts. Kill any finding that received a DISPROVED verdict.
 
 ## Phase 2: Compile Survivors
 
+Synthesis preamble — apply throughout this phase:
+
+- **Maxim:** Unanimous agreement is the most dangerous failure mode — treat it as a signal to re-examine, not confirm.
+- **Blind score first:** Before synthesizing a verdict, each reviewer provides an independent numerical score (1-5, high = serious concern) without seeing other reviewers' scores. Use these to detect anchoring and sycophancy.
+
 Assemble findings that survived Blue defense:
 
 1. **Tag each finding with its source altitude** (Textual / Analytical / Strategic).
