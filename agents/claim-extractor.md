@@ -11,7 +11,7 @@ description: |
   The claim-extractor reads the entire document and catalogs every verifiable factual claim with materiality, temporality, and assertion polarity tags. It does NOT evaluate whether claims are correct — only extracts them for downstream verification.
   </commentary>
   </example>
-model: opus
+model: sonnet
 color: green
 tools: ["Read", "Grep"]
 ---

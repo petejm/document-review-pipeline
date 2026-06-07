@@ -11,7 +11,7 @@ description: |
   The textual Red agent focuses on surface-level accuracy: typos, grammar, formatting, cross-references, acronyms, citations, unit consistency, and conversion artifacts.
   </commentary>
   </example>
-model: opus
+model: sonnet
 color: red
 tools: ["Read", "Grep", "Glob"]
 ---

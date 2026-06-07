@@ -11,7 +11,7 @@ description: |
   The strategic Red agent focuses on high-altitude issues: audience fit, competing counterarguments, structural effectiveness, thesis coherence, and persuasive impact.
   </commentary>
   </example>
-model: opus
+model: sonnet
 color: red
 tools: ["Read", "Grep", "Glob"]
 ---

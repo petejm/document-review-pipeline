@@ -11,7 +11,7 @@ description: |
   The analytical Red agent focuses on logical and evidentiary issues: unsourced claims, internal contradictions, overstated conclusions, missing caveats, and factual claims requiring verification.
   </commentary>
   </example>
-model: opus
+model: sonnet
 color: red
 tools: ["Read", "Grep", "Glob"]
 ---
