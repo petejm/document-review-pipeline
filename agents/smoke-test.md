@@ -1,6 +1,7 @@
 ---
 name: smoke-test
-description: Use this agent for Phase 3 of the document review pipeline — verifying that every quote in the final review matches the source document exactly. Launched by the review-document command, 2-3 instances in parallel, each covering a batch of findings. Examples:
+description: |
+  Use this agent for Phase 3 of the document review pipeline — verifying that every quote in the final review matches the source document exactly. Launched by the review-document command, 2-3 instances in parallel, each covering a batch of findings. Examples:
 
   <example>
   Context: The review-document command has compiled surviving findings and needs final verification.
@@ -10,7 +11,6 @@ description: Use this agent for Phase 3 of the document review pipeline — veri
   Phase 3 uses fresh agents that have never seen the prior output. They verify the final review artifact against the source before delivery.
   </commentary>
   </example>
-
 model: sonnet
 color: cyan
 tools: ["Read", "Grep"]

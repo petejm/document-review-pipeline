@@ -1,6 +1,7 @@
 ---
 name: blue-defender
-description: Use this agent for Phase 1 Blue defense in the document review pipeline — adversarial testing of a single finding. Launched by the review-document command, one instance per Red finding, in parallel. The Blue defender's job is to KILL findings by searching the source document for evidence that contradicts the Red team's claim. Examples:
+description: |
+  Use this agent for Phase 1 Blue defense in the document review pipeline — adversarial testing of a single finding. Launched by the review-document command, one instance per Red finding, in parallel. The Blue defender's job is to KILL findings by searching the source document for evidence that contradicts the Red team's claim. Examples:
 
   <example>
   Context: A Red agent has produced a finding. The orchestrator dispatches a Blue defender to contest it.
@@ -10,7 +11,6 @@ description: Use this agent for Phase 1 Blue defense in the document review pipe
   Each Blue defender gets exactly one finding and grep access to the source document. Small scope prevents hallucination creep. The Blue agent's ONLY job is to kill the finding.
   </commentary>
   </example>
-
 model: sonnet
 color: blue
 tools: ["Read", "Grep"]

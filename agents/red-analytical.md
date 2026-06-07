@@ -1,6 +1,7 @@
 ---
 name: red-analytical
-description: Use this agent for the Analytical Red team in Phase 1 of the document review pipeline — argument and evidence findings. Launched by the review-document command as one of three parallel Red agents. Examples:
+description: |
+  Use this agent for the Analytical Red team in Phase 1 of the document review pipeline — argument and evidence findings. Launched by the review-document command as one of three parallel Red agents. Examples:
 
   <example>
   Context: The review-document command is orchestrating a v5 Red vs Blue review.
@@ -10,7 +11,6 @@ description: Use this agent for the Analytical Red team in Phase 1 of the docume
   The analytical Red agent focuses on logical and evidentiary issues: unsourced claims, internal contradictions, overstated conclusions, missing caveats, and factual claims requiring verification.
   </commentary>
   </example>
-
 model: opus
 color: red
 tools: ["Read", "Grep", "Glob"]

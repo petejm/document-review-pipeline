@@ -1,6 +1,7 @@
 ---
 name: red-strategic
-description: Use this agent for the Strategic Red team in Phase 1 of the document review pipeline — audience and persuasion findings. Launched by the review-document command as one of three parallel Red agents. Examples:
+description: |
+  Use this agent for the Strategic Red team in Phase 1 of the document review pipeline — audience and persuasion findings. Launched by the review-document command as one of three parallel Red agents. Examples:
 
   <example>
   Context: The review-document command is orchestrating a v5 Red vs Blue review.
@@ -10,7 +11,6 @@ description: Use this agent for the Strategic Red team in Phase 1 of the documen
   The strategic Red agent focuses on high-altitude issues: audience fit, competing counterarguments, structural effectiveness, thesis coherence, and persuasive impact.
   </commentary>
   </example>
-
 model: opus
 color: red
 tools: ["Read", "Grep", "Glob"]

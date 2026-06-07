@@ -1,6 +1,7 @@
 ---
 name: claim-extractor
-description: Use this agent for Phase 4a of the document review pipeline — systematic factual claim extraction from the source document. Launched by the review-document command after Phase 3 completes. Extracts every verifiable factual claim without evaluating correctness. Examples:
+description: |
+  Use this agent for Phase 4a of the document review pipeline — systematic factual claim extraction from the source document. Launched by the review-document command after Phase 3 completes. Extracts every verifiable factual claim without evaluating correctness. Examples:
 
   <example>
   Context: The review-document command is orchestrating a v5 Red vs Blue review. Phase 3 is complete.
@@ -10,7 +11,6 @@ description: Use this agent for Phase 4a of the document review pipeline — sys
   The claim-extractor reads the entire document and catalogs every verifiable factual claim with materiality, temporality, and assertion polarity tags. It does NOT evaluate whether claims are correct — only extracts them for downstream verification.
   </commentary>
   </example>
-
 model: opus
 color: green
 tools: ["Read", "Grep"]
